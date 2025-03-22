@@ -6,7 +6,7 @@ import { z } from "zod";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import { createIssueSchema } from "@/app/validationSchemas";
-import { ErrorMessage } from "@hookform/error-message";
+import ErrorMessage from "@/app/components/ErrorMessage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FaGithubAlt } from "react-icons/fa6";
@@ -29,7 +29,6 @@ const NewIssuePage = () => {
     handleSubmit,
   } = useForm<IssueForm>({ resolver: zodResolver(createIssueSchema) });
 
-  console.log(errors);
   const doSubmit = async (issue: IssueForm) => {
     try {
       await axios.post("/api/issues", issue);
@@ -50,17 +49,10 @@ const NewIssuePage = () => {
       className="space-y-3 md:px-32 lg:px-48"
       onSubmit={handleSubmit(doSubmit)}
     >
-      <ErrorMessage
-        name="title"
-        errors={errors}
-        render={({ message }) => <p className="text-destructive">{message}</p>}
-      />
+      <ErrorMessage name="title" errors={errors} />
       <Input type="text" placeholder="Title" {...register("title")} />
-      <ErrorMessage
-        name="description"
-        errors={errors}
-        render={({ message }) => <p className="text-destructive">{message}</p>}
-      />
+
+      <ErrorMessage name="description" errors={errors} />
       <Controller
         name="description"
         control={control}
@@ -68,6 +60,7 @@ const NewIssuePage = () => {
           <SimpleMDE {...field} placeholder="Description" />
         )}
       />
+
       <Button className="rounded-sm">
         <FaGithubAlt />
         Submit New Issue
