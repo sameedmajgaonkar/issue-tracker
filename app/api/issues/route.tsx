@@ -1,14 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/prisma/client";
-
-const createIssueSchema = z.object({
-  title: z
-    .string()
-    .min(1, { message: "Please provide a title" })
-    .max(255, { message: "Title cannot exceed 255 characters." }),
-  description: z.string().min(1, { message: "Please provide a description " }),
-});
+import { createIssueSchema } from "../../validationSchemas";
 
 type Issue = z.infer<typeof createIssueSchema>;
 
