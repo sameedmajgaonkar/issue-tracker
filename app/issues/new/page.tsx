@@ -65,7 +65,7 @@ const NewIssuePage = () => {
       <Button className="rounded-sm" disabled={isSubmitting}>
         <FaGithubAlt />
         Submit New Issue{" "}
-        <Spinner show={true} size="small" className="text-secondary" />
+        <Spinner show={isSubmitting} size="small" className="text-secondary" />
       </Button>
     </form>
   );

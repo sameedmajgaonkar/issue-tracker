@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { Card, CardContent } from "@/components/ui/card";
+import Markdown from "react-markdown";
+
 interface Props {
   params: Promise<{ id: string }>;
 }
@@ -23,9 +25,9 @@ const IssueDetailsPage = async ({ params }: Props) => {
         <IssueStatusBadge status={issue.status} />
         <Text>{issue.createdAt.toDateString()}</Text>
       </div>
-      <Card>
+      <Card className="prose prose-h1:text-primary prose-em:text-primary prose-blockquote:text-primary">
         <CardContent>
-          <Text>{issue.description}</Text>
+          <Markdown>{issue.description}</Markdown>
         </CardContent>
       </Card>
     </div>
