@@ -29,13 +29,13 @@ const LoadingIssuesPage = () => {
             {issues.map((issue) => (
               <TableRow key={issue}>
                 <TableCell>
-                  <Skeleton></Skeleton>
+                  <Skeleton />
                 </TableCell>
                 <TableCell>
-                  <Skeleton></Skeleton>
+                  <Skeleton />
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  <Skeleton></Skeleton>
+                  <Skeleton />
                 </TableCell>
               </TableRow>
             ))}

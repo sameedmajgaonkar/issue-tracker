@@ -5,12 +5,14 @@ import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { Card, CardContent } from "@/components/ui/card";
 import Markdown from "react-markdown";
+import delay from "delay";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
 const IssueDetailsPage = async ({ params }: Props) => {
+  await delay(3000);
   const { id } = await params;
   const issue = await prisma.issue.findUnique({
     where: { id: parseInt(id) },
