@@ -1,21 +1,16 @@
-import React from "react";
-import Link from "next/link";
 import {
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
   TableHeader,
   TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
 } from "@/components/ui/table";
-import { prisma } from "@/prisma/client";
-import IssueStatusBadge from "../components/IssueStatusBadge";
-import delay from "delay";
+import { Skeleton } from "@/components/ui/skeleton";
 import IssueToolbar from "./IssueToolbar";
 
-const IssuesPage = async () => {
-  const issues = await prisma.issue.findMany();
-  await delay(1000);
+const LoadingIssuesPage = () => {
+  const issues = [1, 2, 3, 4, 5];
   return (
     <>
       <IssueToolbar />
@@ -32,15 +27,15 @@ const IssuesPage = async () => {
           </TableHeader>
           <TableBody>
             {issues.map((issue) => (
-              <TableRow key={issue.id}>
+              <TableRow key={issue}>
                 <TableCell>
-                  <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
+                  <Skeleton></Skeleton>
                 </TableCell>
                 <TableCell>
-                  <IssueStatusBadge status={issue.status} />
+                  <Skeleton></Skeleton>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  {issue.createdAt.toDateString()}
+                  <Skeleton></Skeleton>
                 </TableCell>
               </TableRow>
             ))}
@@ -51,4 +46,4 @@ const IssuesPage = async () => {
   );
 };
 
-export default IssuesPage;
+export default LoadingIssuesPage;
