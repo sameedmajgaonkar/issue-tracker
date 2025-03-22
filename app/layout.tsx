@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import NavBar from "./NavBar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Issue Tracker",
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <Toaster position="top-right" />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

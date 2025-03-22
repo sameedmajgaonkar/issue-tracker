@@ -6,7 +6,9 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FaGithubAlt } from "react-icons/fa6";
+import { BiSolidError } from "react-icons/bi";
 import "easymde/dist/easymde.min.css";
+import { toast } from "sonner";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
@@ -23,8 +25,18 @@ const NewIssuePage = () => {
   const { register, control, handleSubmit } = useForm<IssueForm>();
 
   const doSubmit = async (issue: IssueForm) => {
-    await axios.post("/api/issues", issue);
-    router.push("/issues");
+    try {
+      await axios.post("/api/issues", issue);
+      router.push("/issues");
+    } catch (error) {
+      toast.error("An unexpected error has occured!", {
+        duration: 1500,
+        style: {
+          backgroundColor: "var(--destructive)",
+          color: "var(--secondary)",
+        },
+      });
+    }
   };
 
   return (
