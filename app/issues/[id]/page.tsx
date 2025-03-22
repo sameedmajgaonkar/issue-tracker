@@ -1,9 +1,13 @@
+import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import { prisma } from "@/prisma/client";
 import { notFound } from "next/navigation";
-
+import { Heading } from "@/components/ui/heading";
+import { Text } from "@/components/ui/text";
+import { Card, CardContent } from "@/components/ui/card";
 interface Props {
   params: Promise<{ id: string }>;
 }
+
 const IssueDetailsPage = async ({ params }: Props) => {
   const { id } = await params;
   const issue = await prisma.issue.findUnique({
@@ -11,13 +15,19 @@ const IssueDetailsPage = async ({ params }: Props) => {
   });
 
   if (!issue) notFound();
+
   return (
-    <div>
-      <h3>{issue?.title}</h3>
-      <p>{issue?.description}</p>
-      <p>{issue?.status}</p>
-      <p>{issue?.createdAt.toDateString()}</p>
-      <p>{issue?.updatedAt.toDateString()}</p>
+    <div className="space-y-5">
+      <Heading>{issue.title}</Heading>
+      <div className="flex gap-5">
+        <IssueStatusBadge status={issue.status} />
+        <Text>{issue.createdAt.toDateString()}</Text>
+      </div>
+      <Card>
+        <CardContent>
+          <Text>{issue.description}</Text>
+        </CardContent>
+      </Card>
     </div>
   );
 };
