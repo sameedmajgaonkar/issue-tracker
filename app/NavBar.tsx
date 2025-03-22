@@ -37,7 +37,6 @@ const NavBar = () => {
             <NavigationMenuLink asChild>
               <Link
                 href={href}
-                passHref
                 className={classNames(
                   "text-muted-foreground hover:text-primary transition-colors font-semibold antialiased",
                   {

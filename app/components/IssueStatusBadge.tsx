@@ -16,9 +16,7 @@ const statusMap: Record<Status, { label: string; className: string }> = {
 
 const IssueStatusBadge = ({ status }: Props) => {
   return (
-    <Badge
-      className={`${statusMap[status].className} rounded-sm font-semibold`}
-    >
+    <Badge className={statusMap[status].className}>
       {statusMap[status].label}
     </Badge>
   );

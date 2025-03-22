@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -12,16 +11,15 @@ import {
 } from "@/components/ui/table";
 import { prisma } from "@/prisma/client";
 import IssueStatusBadge from "../components/IssueStatusBadge";
+import delay from "delay";
+import IssueToolbar from "./IssueToolbar";
+
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
-
+  await delay(1000);
   return (
     <>
-      <div className="mb-10">
-        <Button asChild variant="outline">
-          <Link href="/issues/new">New Issue</Link>
-        </Button>
-      </div>
+      <IssueToolbar />
       <div className="md:px-56">
         <Table className="text-center">
           <TableHeader>
