@@ -9,6 +9,7 @@ import { createIssueSchema } from "@/app/validationSchemas";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 import { FaGithubAlt } from "react-icons/fa6";
 import { toast } from "sonner";
 import "easymde/dist/easymde.min.css";
@@ -25,7 +26,7 @@ const NewIssuePage = () => {
   const {
     register,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm<IssueForm>({ resolver: zodResolver(createIssueSchema) });
 
@@ -61,9 +62,10 @@ const NewIssuePage = () => {
         )}
       />
 
-      <Button className="rounded-sm">
+      <Button className="rounded-sm" disabled={isSubmitting}>
         <FaGithubAlt />
-        Submit New Issue
+        Submit New Issue{" "}
+        <Spinner show={true} size="small" className="text-secondary" />
       </Button>
     </form>
   );
