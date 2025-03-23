@@ -41,9 +41,10 @@ const IssueForm = ({ issue }: Props) => {
     },
   });
 
-  const doSubmit = async (issue: IssueFormData) => {
+  const doSubmit = async (newIssue: IssueFormData) => {
     try {
-      await axios.post("/api/issues", issue);
+      if (issue) await axios.patch(`/api/issues/${issue.id}`, newIssue);
+      else await axios.post("/api/issues", newIssue);
       router.push("/issues");
     } catch (error) {
       toast.error("An unexpected error has occured!", {
@@ -72,7 +73,7 @@ const IssueForm = ({ issue }: Props) => {
 
       <Button disabled={isSubmitting}>
         <FaGithubAlt />
-        Submit New Issue{" "}
+        {issue ? "Update" : "Submit New"} Issue{" "}
         <Spinner show={isSubmitting} size="small" className="text-secondary" />
       </Button>
     </form>

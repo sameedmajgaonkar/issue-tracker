@@ -17,7 +17,7 @@ const IssueDetails = ({ issue }: Props) => {
         <IssueStatusBadge status={issue.status} />
         <Text>{issue.createdAt.toDateString()}</Text>
       </div>
-      <Card className="prose prose-h1:text-primary prose-em:text-primary prose-blockquote:text-primary">
+      <Card className="prose">
         <CardContent>
           <Markdown>{issue.description}</Markdown>
         </CardContent>

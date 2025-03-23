@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@config "./tailwind.config.js";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
@@ -118,4 +119,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.prose {
+  @apply text-primary
 }
