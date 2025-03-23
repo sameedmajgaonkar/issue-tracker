@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const createIssueSchema = z.object({
+export const issueSchema = z.object({
   description: z.string().min(1, { message: "Please provide a description" }),
   title: z
     .string()

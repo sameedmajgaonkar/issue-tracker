@@ -6,7 +6,7 @@ import { Issue } from "@prisma/client";
 import { z } from "zod";
 import dynamic from "next/dynamic";
 import axios from "axios";
-import { createIssueSchema } from "@/app/validationSchemas";
+import { issueSchema } from "@/app/validationSchemas";
 import { ErrorMessage } from "@/app/components";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,7 +23,7 @@ interface Props {
   issue?: Issue | null;
 }
 
-type IssueFormData = z.infer<typeof createIssueSchema>;
+type IssueFormData = z.infer<typeof issueSchema>;
 
 const IssueForm = ({ issue }: Props) => {
   const router = useRouter();
@@ -34,7 +34,7 @@ const IssueForm = ({ issue }: Props) => {
     formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm<IssueFormData>({
-    resolver: zodResolver(createIssueSchema),
+    resolver: zodResolver(issueSchema),
     defaultValues: {
       title: issue?.title || "",
       description: issue?.description || "",
