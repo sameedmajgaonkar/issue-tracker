@@ -46,10 +46,7 @@ const NewIssuePage = () => {
   };
 
   return (
-    <form
-      className="space-y-3 md:px-32 lg:px-48"
-      onSubmit={handleSubmit(doSubmit)}
-    >
+    <form className="space-y-3" onSubmit={handleSubmit(doSubmit)}>
       <ErrorMessage name="title" errors={errors} />
       <Input type="text" placeholder="Title" {...register("title")} />
 
