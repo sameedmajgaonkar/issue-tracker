@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Issue } from "@prisma/client";
 import { z } from "zod";
-import dynamic from "next/dynamic";
 import axios from "axios";
 import { issueSchema } from "@/app/validationSchemas";
 import { ErrorMessage } from "@/app/components";
@@ -13,11 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { FaGithubAlt } from "react-icons/fa6";
 import { toast } from "sonner";
+import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
-
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
 
 interface Props {
   issue?: Issue | null;
