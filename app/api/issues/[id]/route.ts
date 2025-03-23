@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
 import { issueSchema } from "@/app/validationSchemas";
 import { prisma } from "@/prisma/client";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 interface RouteParams {
@@ -44,6 +44,7 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
   const { id } = await params;
+
   const issue = await prisma.issue.findUnique({
     where: {
       id: parseInt(id),

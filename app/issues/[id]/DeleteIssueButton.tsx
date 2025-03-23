@@ -15,6 +15,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
+import { useState } from "react";
 
 interface Props {
   issueId: number;
@@ -23,20 +25,27 @@ interface Props {
 const DeleteIssueButton = ({ issueId }: Props) => {
   const router = useRouter();
 
+  const [isDeleting, setDeleting] = useState(false);
+
   const handleDelete = async () => {
     try {
+      setDeleting(true);
       await axios.delete(`/api/issues/${issueId}`);
       router.push("/issues");
       router.refresh();
     } catch (error) {
       toast.error("An unexpected error has occured!");
+    } finally {
+      setDeleting(false);
     }
   };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="bg-destructive">
-          <MdDelete /> Delete Issue
+        <Button className="bg-destructive" disabled={isDeleting}>
+          <MdDelete /> Delete Issue{" "}
+          <Spinner show={isDeleting} size="small" className="text-secondary" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
