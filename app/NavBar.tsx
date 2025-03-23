@@ -25,11 +25,11 @@ const NavBar = () => {
   ];
 
   return (
-    <NavigationMenu className="px-2 justify-start border-b min-w-full bg-accent text-3xl">
+    <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/">
-            <AiFillBug />
+            <AiFillBug className="text-3xl" />
           </Link>
         </NavigationMenuItem>
         {links.map(({ href, label }) => (
@@ -38,7 +38,7 @@ const NavBar = () => {
               <Link
                 href={href}
                 className={classNames(
-                  "text-muted-foreground hover:text-primary transition-colors font-semibold antialiased",
+                  "text-muted-foreground hover:text-primary transition-colors antialiased",
                   {
                     "text-primary": href === pathName,
                   }
@@ -49,6 +49,8 @@ const NavBar = () => {
             </NavigationMenuLink>
           </NavigationMenuItem>
         ))}
+      </NavigationMenuList>
+      <NavigationMenuList>
         <NavigationMenuItem>
           <Button
             variant="ghost"
