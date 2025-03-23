@@ -17,7 +17,7 @@ const IssueDetails = ({ issue }: Props) => {
         <IssueStatusBadge status={issue.status} />
         <Text>{issue.createdAt.toDateString()}</Text>
       </div>
-      <Card className="prose">
+      <Card className="prose max-w-full">
         <CardContent>
           <Markdown>{issue.description}</Markdown>
         </CardContent>
