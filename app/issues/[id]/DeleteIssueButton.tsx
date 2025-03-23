@@ -1,3 +1,6 @@
+"use client";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { MdDelete } from "react-icons/md";
 import {
@@ -11,12 +14,24 @@ import {
   AlertDialogCancel,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 interface Props {
   issueId: number;
 }
 
 const DeleteIssueButton = ({ issueId }: Props) => {
+  const router = useRouter();
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/issues/${issueId}`);
+      router.push("/issues");
+      router.refresh();
+    } catch (error) {
+      toast.error("An unexpected error has occured!");
+    }
+  };
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -36,7 +51,7 @@ const DeleteIssueButton = ({ issueId }: Props) => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction>Proceed</AlertDialogAction>
+          <AlertDialogAction onClick={handleDelete}>Proceed</AlertDialogAction>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>

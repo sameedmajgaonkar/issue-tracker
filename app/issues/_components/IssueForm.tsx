@@ -44,13 +44,7 @@ const IssueForm = ({ issue }: Props) => {
       router.push("/issues");
       router.refresh();
     } catch (error) {
-      toast.error("An unexpected error has occured!", {
-        duration: 1500,
-        style: {
-          backgroundColor: "var(--destructive)",
-          color: "var(--secondary)",
-        },
-      });
+      toast.error("An unexpected error has occured!");
     }
   };
 
