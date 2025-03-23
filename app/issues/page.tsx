@@ -1,5 +1,3 @@
-import React from "react";
-import Link from "../components/Link";
 import {
   Table,
   TableBody,
@@ -9,13 +7,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { prisma } from "@/prisma/client";
-import IssueStatusBadge from "../components/IssueStatusBadge";
-import delay from "delay";
+import { IssueStatusBadge } from "@/app/components";
+import { Link } from "@/app/components";
 import IssueToolbar from "./IssueToolbar";
 
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
-  await delay(1000);
   return (
     <>
       <IssueToolbar />

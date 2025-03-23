@@ -6,7 +6,7 @@ import { z } from "zod";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import { createIssueSchema } from "@/app/validationSchemas";
-import ErrorMessage from "@/app/components/ErrorMessage";
+import { ErrorMessage } from "@/app/components";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
