@@ -15,9 +15,19 @@ import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { useSession, signIn, signOut } from "next-auth/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const NavBar = () => {
   const { data: session, status } = useSession();
+  console.log(session);
   const pathName = usePathname();
   const { setTheme, theme } = useTheme();
 
@@ -27,11 +37,11 @@ const NavBar = () => {
   ];
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="md:px-32 lg:px-48">
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/">
-            <AiFillBug className="text-3xl" />
+            <AiFillBug className="text-xl md:text-3xl" />
           </Link>
         </NavigationMenuItem>
         {links.map(({ href, label }) => (
@@ -52,18 +62,33 @@ const NavBar = () => {
           </NavigationMenuItem>
         ))}
       </NavigationMenuList>
-      <NavigationMenuList>
+      <NavigationMenuList className="items-center">
         <NavigationMenuItem>
           {status === "authenticated" && (
-            <Button variant="link" onClick={() => signOut()}>
-              Logout
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="cursor-pointer" asChild>
+                <Avatar>
+                  <AvatarImage src={session.user!.image!} alt="avatar" />
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="mt-3">
+                <DropdownMenuLabel>{session.user!.email}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Button variant="link" onClick={() => signOut()}>
+                    Logout
+                  </Button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
           {status === "unauthenticated" && (
             <Button variant="link" onClick={() => signIn()}>
               Login
             </Button>
           )}
+        </NavigationMenuItem>
+        <NavigationMenuItem>
           <Button
             variant="ghost"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
