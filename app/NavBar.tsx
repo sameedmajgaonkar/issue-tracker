@@ -26,15 +26,7 @@ import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const NavBar = () => {
-  const { data: session, status } = useSession();
-  console.log(session);
-  const pathName = usePathname();
   const { setTheme, theme } = useTheme();
-
-  const links = [
-    { href: "/", label: "Dashboard" },
-    { href: "/issues", label: "Issues" },
-  ];
 
   return (
     <NavigationMenu className="md:px-32 lg:px-48">
@@ -44,54 +36,11 @@ const NavBar = () => {
             <AiFillBug className="text-xl md:text-3xl" />
           </Link>
         </NavigationMenuItem>
-        {links.map(({ href, label }) => (
-          <NavigationMenuItem key={href}>
-            <NavigationMenuLink asChild>
-              <Link
-                href={href}
-                className={classNames(
-                  "text-muted-foreground hover:text-primary transition-colors antialiased",
-                  {
-                    "text-primary": href === pathName,
-                  }
-                )}
-              >
-                {label}
-              </Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-        ))}
+        <NavLinks />
       </NavigationMenuList>
       <NavigationMenuList className="items-center">
         <NavigationMenuItem>
-          {status === "authenticated" && (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="cursor-pointer" asChild>
-                <Avatar>
-                  <AvatarImage
-                    src={session.user!.image!}
-                    alt="avatar"
-                    referrerPolicy="no-referrer"
-                  />
-                  <AvatarFallback delayMs={3000}>?</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="mt-3">
-                <DropdownMenuLabel>{session.user!.email}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Button variant="link" onClick={() => signOut()}>
-                    Logout
-                  </Button>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-          {status === "unauthenticated" && (
-            <Button variant="link" onClick={() => signIn()}>
-              Login
-            </Button>
-          )}
+          <AuthStatus />
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Button
@@ -103,6 +52,67 @@ const NavBar = () => {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
+  );
+};
+
+const NavLinks = () => {
+  const pathName = usePathname();
+  const links = [
+    { href: "/", label: "Dashboard" },
+    { href: "/issues", label: "Issues" },
+  ];
+
+  return links.map(({ href, label }) => (
+    <NavigationMenuItem key={href}>
+      <NavigationMenuLink asChild>
+        <Link
+          href={href}
+          className={classNames(
+            "text-muted-foreground hover:text-primary transition-colors antialiased",
+            {
+              "text-primary": href === pathName,
+            }
+          )}
+        >
+          {label}
+        </Link>
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+  ));
+};
+
+const AuthStatus = () => {
+  const { data: session, status } = useSession();
+
+  if (status === "loading") return null;
+
+  if (status === "unauthenticated")
+    return (
+      <Button variant="outline" onClick={() => signIn()}>
+        Login
+      </Button>
+    );
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="cursor-pointer" asChild>
+        <Avatar>
+          <AvatarImage
+            src={session!.user!.image!}
+            alt="avatar"
+            referrerPolicy="no-referrer"
+          />
+          <AvatarFallback delayMs={3000}>?</AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="mt-3">
+        <DropdownMenuLabel>{session!.user!.email}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
+          <DropdownMenuLabel>Logout</DropdownMenuLabel>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
