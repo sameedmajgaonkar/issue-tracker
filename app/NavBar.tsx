@@ -14,8 +14,10 @@ import { AiFillBug } from "react-icons/ai";
 import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
 import { Button } from "@/components/ui/button";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const NavBar = () => {
+  const { data: session, status } = useSession();
   const pathName = usePathname();
   const { setTheme, theme } = useTheme();
 
@@ -52,6 +54,16 @@ const NavBar = () => {
       </NavigationMenuList>
       <NavigationMenuList>
         <NavigationMenuItem>
+          {status === "authenticated" && (
+            <Button variant="link" onClick={() => signOut()}>
+              Logout
+            </Button>
+          )}
+          {status === "unauthenticated" && (
+            <Button variant="link" onClick={() => signIn()}>
+              Login
+            </Button>
+          )}
           <Button
             variant="ghost"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}

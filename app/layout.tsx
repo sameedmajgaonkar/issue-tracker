@@ -3,6 +3,7 @@ import NavBar from "./NavBar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import AuthProvider from "./auth/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Issue Tracker",
@@ -17,16 +18,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Toaster position="top-right" duration={1500} />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NavBar />
-          <main className="p-5">{children}</main>
-        </ThemeProvider>
+        <AuthProvider>
+          <Toaster position="top-right" duration={1500} />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NavBar />
+            <main className="p-5">{children}</main>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
