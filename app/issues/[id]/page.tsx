@@ -17,15 +17,15 @@ const IssueDetailsPage = async ({ params }: Props) => {
   if (!issue) notFound();
 
   return (
-    <div className="space-y-5">
-      <div className="space-y-5 max-w-xl">
+    <>
+      <div className="space-y-5">
         <IssueDetails issue={issue} />
       </div>
-      <div className="flex gap-5">
+      <div className="flex gap-5 mt-5">
         <EditIssueButton issueId={issue.id} />
         <DeleteIssueButton issueId={issue.id} />
       </div>
-    </div>
+    </>
   );
 };
 

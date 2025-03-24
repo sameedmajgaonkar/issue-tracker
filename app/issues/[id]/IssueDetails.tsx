@@ -11,7 +11,7 @@ interface Props {
 
 const IssueDetails = ({ issue }: Props) => {
   return (
-    <>
+    <div className="space-y-5">
       <Heading>{issue.title}</Heading>
       <div className="flex gap-5">
         <IssueStatusBadge status={issue.status} />
@@ -22,7 +22,7 @@ const IssueDetails = ({ issue }: Props) => {
           <Markdown>{issue.description}</Markdown>
         </CardContent>
       </Card>
-    </>
+    </div>
   );
 };
 
