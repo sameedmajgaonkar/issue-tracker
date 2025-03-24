@@ -68,7 +68,12 @@ const NavBar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger className="cursor-pointer" asChild>
                 <Avatar>
-                  <AvatarImage src={session.user!.image!} alt="avatar" />
+                  <AvatarImage
+                    src={session.user!.image!}
+                    alt="avatar"
+                    referrerPolicy="no-referrer"
+                  />
+                  <AvatarFallback delayMs={3000}>?</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="mt-3">
