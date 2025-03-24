@@ -24,12 +24,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const NavBar = () => {
   const { setTheme, theme } = useTheme();
 
   return (
-    <NavigationMenu className="md:px-32 lg:px-48">
+    <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/">
@@ -38,7 +39,7 @@ const NavBar = () => {
         </NavigationMenuItem>
         <NavLinks />
       </NavigationMenuList>
-      <NavigationMenuList className="items-center">
+      <NavigationMenuList>
         <NavigationMenuItem>
           <AuthStatus />
         </NavigationMenuItem>
@@ -84,7 +85,8 @@ const NavLinks = () => {
 const AuthStatus = () => {
   const { data: session, status } = useSession();
 
-  if (status === "loading") return null;
+  if (status === "loading")
+    return <Skeleton className="h-9 w-16 rounded-4xl bg-neutral-500" />;
 
   if (status === "unauthenticated")
     return (
