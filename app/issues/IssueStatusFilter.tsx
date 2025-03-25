@@ -9,8 +9,17 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { Status } from "@prisma/client";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const IssueStatusFilter = () => {
+  const searchParams = useSearchParams();
+  const selectedStatus = Object.values(Status).includes(
+    searchParams.get("status") as Status // no tyoe casting
+  )
+    ? searchParams.get("status")
+    : "All";
+
+  const router = useRouter();
   const statuses: { label: String; value?: Status }[] = [
     {
       label: "All",
@@ -20,7 +29,13 @@ const IssueStatusFilter = () => {
     { label: "Closed", value: "CLOSE" },
   ];
   return (
-    <Select>
+    <Select
+      defaultValue={selectedStatus!}
+      onValueChange={(status) => {
+        const query = status && status !== "All" ? `?status=${status}` : "";
+        router.push(`/issues/${query}`);
+      }}
+    >
       <SelectTrigger>
         <SelectValue placeholder="Filter: by status" />
       </SelectTrigger>

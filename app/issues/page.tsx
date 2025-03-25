@@ -10,9 +10,21 @@ import { prisma } from "@/prisma/client";
 import { IssueStatusBadge } from "@/app/components";
 import { Link } from "@/app/components";
 import IssueToolbar from "./IssueToolbar";
+import { Status } from "@prisma/client";
 
-const IssuesPage = async () => {
-  const issues = await prisma.issue.findMany();
+interface Props {
+  searchParams: Promise<{ status: Status }>;
+}
+const IssuesPage = async ({ searchParams }: Props) => {
+  const params = await searchParams;
+
+  const statuses = Object.values(Status);
+  const status = statuses.includes(params.status) ? params.status : undefined;
+
+  const issues = await prisma.issue.findMany({
+    where: { status },
+  });
+
   return (
     <>
       <IssueToolbar />
