@@ -5,6 +5,8 @@ import authOptions from "@/app/auth/authOptions";
 import IssueDetails from "./IssueDetails";
 import EditIssueButton from "./EditIssueButton";
 import DeleteIssueButton from "./DeleteIssueButton";
+import AssigneeSelect from "../_components/AssigneeSelect";
+
 interface Props {
   params: Promise<{ id: string }>;
 }
@@ -24,7 +26,8 @@ const IssueDetailsPage = async ({ params }: Props) => {
         <IssueDetails issue={issue} />
       </div>
       {session && (
-        <div className="flex gap-5 mt-5">
+        <div className="flex gap-5 mt-5 flex-wrap justify-center">
+          <AssigneeSelect />
           <EditIssueButton issueId={issue.id} />
           <DeleteIssueButton issueId={issue.id} />
         </div>
