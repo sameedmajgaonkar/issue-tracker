@@ -4,6 +4,8 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import AuthProvider from "./auth/AuthProvider";
+import QueryClientProvider from "./QueryClientProvider";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export const metadata: Metadata = {
   title: "Issue Tracker",
@@ -18,18 +20,21 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <AuthProvider>
-          <Toaster position="top-right" duration={1500} />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NavBar />
-            <main className="p-5">{children}</main>
-          </ThemeProvider>
-        </AuthProvider>
+        <QueryClientProvider>
+          <AuthProvider>
+            <Toaster position="top-right" duration={1500} />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <NavBar />
+              <main className="p-5">{children}</main>
+            </ThemeProvider>
+          </AuthProvider>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
       </body>
     </html>
   );
