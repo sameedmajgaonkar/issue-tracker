@@ -8,8 +8,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { User } from "@prisma/client";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const AssigneeSelect = () => {
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    axios.get<User[]>("/api/users").then(({ data }) => setUsers(data));
+  }, []);
+
   return (
     <Select>
       <SelectTrigger>
@@ -18,9 +27,11 @@ const AssigneeSelect = () => {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Suggestions</SelectLabel>
-          <SelectItem value="1">Sameed Majgaonkar</SelectItem>
-          <SelectItem value="2">Aviraj Patil</SelectItem>
-          <SelectItem value="3">Subhan Bhatkar</SelectItem>
+          {users.map((user) => (
+            <SelectItem value={user.id} key={user.id}>
+              {user.name}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>

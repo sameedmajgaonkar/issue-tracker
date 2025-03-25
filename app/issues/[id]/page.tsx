@@ -1,11 +1,11 @@
-import { prisma } from "@/prisma/client";
-import { notFound } from "next/navigation";
-import { getServerSession } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
-import IssueDetails from "./IssueDetails";
-import EditIssueButton from "./EditIssueButton";
-import DeleteIssueButton from "./DeleteIssueButton";
+import { prisma } from "@/prisma/client";
+import { getServerSession } from "next-auth";
+import { notFound } from "next/navigation";
 import AssigneeSelect from "../_components/AssigneeSelect";
+import DeleteIssueButton from "./DeleteIssueButton";
+import EditIssueButton from "./EditIssueButton";
+import IssueDetails from "./IssueDetails";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -27,9 +27,9 @@ const IssueDetailsPage = async ({ params }: Props) => {
       </div>
       {session && (
         <div className="flex gap-5 mt-5 flex-wrap justify-center">
-          <AssigneeSelect />
           <EditIssueButton issueId={issue.id} />
           <DeleteIssueButton issueId={issue.id} />
+          <AssigneeSelect />
         </div>
       )}
     </>
