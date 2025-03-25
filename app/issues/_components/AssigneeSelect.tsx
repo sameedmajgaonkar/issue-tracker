@@ -13,35 +13,29 @@ import { Issue, User } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import ms from "ms";
+import { toast } from "sonner";
 
 interface Props {
   issue: Issue;
 }
 const AssigneeSelect = ({ issue }: Props) => {
-  function fetchUsers() {
-    return axios.get<User[]>("/api/users/").then((res) => res.data);
-  }
-  const {
-    data: users,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: fetchUsers,
-    staleTime: ms("1m"),
-  });
+  const { data: users, isLoading, error } = useUsers();
+
+  const assignIssue = (userId: string) =>
+    axios
+      .patch(`/api/issues/${issue.id}`, {
+        assignedToUserId: userId !== "unassigned" ? userId : null,
+      })
+      .catch(() => toast.error("Changes could not be saved"));
 
   if (isLoading) return <Skeleton className="h-9 w-24" />;
 
   if (error) return null;
+
   return (
     <Select
       defaultValue={issue.assignedToUserId || "unassigned"}
-      onValueChange={(userId) =>
-        axios.patch(`/api/issues/${issue.id}`, {
-          assignedToUserId: userId !== "unassigned" ? userId : null,
-        })
-      }
+      onValueChange={assignIssue}
     >
       <SelectTrigger>
         <SelectValue placeholder="Assignee..." />
@@ -59,6 +53,17 @@ const AssigneeSelect = ({ issue }: Props) => {
       </SelectContent>
     </Select>
   );
+};
+
+const useUsers = () => {
+  function fetchUsers() {
+    return axios.get<User[]>("/api/users/").then((res) => res.data);
+  }
+  return useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsers,
+    staleTime: ms("24h"),
+  });
 };
 
 export default AssigneeSelect;
