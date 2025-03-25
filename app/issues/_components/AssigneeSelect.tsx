@@ -8,17 +8,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { User } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import ms from "ms";
 
 const AssigneeSelect = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  function fetchUsers() {
+    return axios.get<User[]>("/api/users/").then((res) => res.data);
+  }
+  const {
+    data: users,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsers,
+    staleTime: ms("1m"),
+  });
 
-  useEffect(() => {
-    axios.get<User[]>("/api/users").then(({ data }) => setUsers(data));
-  }, []);
+  if (isLoading) return <Skeleton className="h-9 w-24" />;
 
+  if (error) return null;
   return (
     <Select>
       <SelectTrigger>
@@ -27,7 +39,7 @@ const AssigneeSelect = () => {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Suggestions</SelectLabel>
-          {users.map((user) => (
+          {users?.map((user) => (
             <SelectItem value={user.id} key={user.id}>
               {user.name}
             </SelectItem>
