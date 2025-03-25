@@ -1,5 +1,7 @@
+import authOptions from "@/app/auth/authOptions";
 import { issueSchema } from "@/app/validationSchemas";
 import { prisma } from "@/prisma/client";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -10,6 +12,9 @@ interface RouteParams {
 type IssueBody = z.infer<typeof issueSchema>;
 
 export async function PATCH(req: NextRequest, { params }: RouteParams) {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({}, { status: 401 });
+
   const { id } = await params;
   const body: IssueBody = await req.json();
   const validation = issueSchema.safeParse(body);
@@ -43,6 +48,9 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
 }
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({}, { status: 401 });
+
   const { id } = await params;
 
   const issue = await prisma.issue.findUnique({
