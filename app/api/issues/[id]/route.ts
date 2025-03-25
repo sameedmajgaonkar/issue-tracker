@@ -1,5 +1,5 @@
 import authOptions from "@/app/auth/authOptions";
-import { issueSchema } from "@/app/validationSchemas";
+import { patchIssueSchema } from "@/app/validationSchemas";
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -9,7 +9,7 @@ interface RouteParams {
   params: Promise<{ id: string }>;
 }
 
-type IssueBody = z.infer<typeof issueSchema>;
+type IssueBody = z.infer<typeof patchIssueSchema>;
 
 export async function PATCH(req: NextRequest, { params }: RouteParams) {
   const session = await getServerSession(authOptions);
@@ -17,11 +17,20 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
 
   const { id } = await params;
   const body: IssueBody = await req.json();
-  const validation = issueSchema.safeParse(body);
+  const validation = patchIssueSchema.safeParse(body);
 
   if (!validation.success)
     return NextResponse.json(validation.error.format(), { status: 400 });
 
+  const { title, description, assignedToUserId } = body;
+
+  if (assignedToUserId) {
+    const user = await prisma.user.findUnique({
+      where: { id: assignedToUserId },
+    });
+    if (!user)
+      return NextResponse.json({ error: "Invalid user" }, { status: 404 });
+  }
   const issue = await prisma.issue.findUnique({
     where: { id: parseInt(id) },
   });
@@ -39,8 +48,9 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
       id: issue.id,
     },
     data: {
-      title: body.title,
-      description: body.description,
+      title,
+      description,
+      assignedToUserId,
     },
   });
 
