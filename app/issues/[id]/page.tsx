@@ -29,7 +29,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
         <div className="flex gap-5 mt-5 flex-wrap justify-center">
           <EditIssueButton issueId={issue.id} />
           <DeleteIssueButton issueId={issue.id} />
-          <AssigneeSelect />
+          <AssigneeSelect issue={issue} />
         </div>
       )}
     </>
