@@ -15,12 +15,14 @@ import {
   IoCaretUpCircleOutline,
 } from "react-icons/io5";
 import IssueToolbar from "./IssueToolbar";
+import Pagination from "../components/Pagination";
 
 interface Props {
   searchParams: Promise<{
     status: Status;
     orderBy: keyof Issue;
     order: "asc" | "desc";
+    page: string;
   }>;
 }
 const IssuesPage = async ({ searchParams }: Props) => {
@@ -40,10 +42,17 @@ const IssuesPage = async ({ searchParams }: Props) => {
     ? { [params.orderBy]: order }
     : undefined;
 
+  const page = parseInt(params.page || "1");
+  const PAGE_SIZE = 10;
+
   const issues = await prisma.issue.findMany({
     where: { status },
     orderBy,
+    skip: (page - 1) * PAGE_SIZE,
+    take: PAGE_SIZE,
   });
+
+  const issueCount = await prisma.issue.count({ where: { status } });
 
   return (
     <>
@@ -93,6 +102,11 @@ const IssuesPage = async ({ searchParams }: Props) => {
           ))}
         </TableBody>
       </Table>
+      <Pagination
+        itemCount={issueCount}
+        pageSize={PAGE_SIZE}
+        currentPage={page}
+      />
     </>
   );
 };
