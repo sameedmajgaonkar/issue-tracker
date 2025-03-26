@@ -30,7 +30,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <NavBar />
-              <main className="p-5">{children}</main>
+              <main className="p-5 md:px-32 lg:px-48">{children}</main>
             </ThemeProvider>
           </AuthProvider>
           <ReactQueryDevtools />
