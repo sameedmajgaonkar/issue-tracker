@@ -1,3 +1,4 @@
+import { IssueStatusBadge, Link } from "@/app/components";
 import {
   Table,
   TableBody,
@@ -7,35 +8,73 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { prisma } from "@/prisma/client";
-import { IssueStatusBadge } from "@/app/components";
-import { Link } from "@/app/components";
+import { Issue, Status } from "@prisma/client";
+import NextLink from "next/link";
+import {
+  IoCaretDownCircleOutline,
+  IoCaretUpCircleOutline,
+} from "react-icons/io5";
 import IssueToolbar from "./IssueToolbar";
-import { Status } from "@prisma/client";
 
 interface Props {
-  searchParams: Promise<{ status: Status }>;
+  searchParams: Promise<{
+    status: Status;
+    orderBy: keyof Issue;
+    order: "asc" | "desc";
+  }>;
 }
 const IssuesPage = async ({ searchParams }: Props) => {
+  const columns: { label: string; value: keyof Issue; classname?: string }[] = [
+    { label: "Issue", value: "title" },
+    { label: "Status", value: "status" },
+    { label: "Created", value: "createdAt", classname: "hidden md:table-cell" },
+  ];
   const params = await searchParams;
 
   const statuses = Object.values(Status);
   const status = statuses.includes(params.status) ? params.status : undefined;
 
+  const order = params.order === "asc" ? "desc" : "asc";
+
+  const orderBy = columns.map((col) => col.value).includes(params.orderBy)
+    ? { [params.orderBy]: order }
+    : undefined;
+
   const issues = await prisma.issue.findMany({
     where: { status },
+    orderBy,
   });
 
   return (
     <>
       <IssueToolbar />
-      <Table className="text-center">
+      <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-center">Issue</TableHead>
-            <TableHead className="text-center">Status</TableHead>
-            <TableHead className="text-center hidden md:table-cell">
-              Created
-            </TableHead>
+            {columns.map((column) => (
+              <TableHead key={column.value} className={column.classname}>
+                <NextLink
+                  href={{
+                    query: {
+                      ...params,
+                      orderBy: column.value,
+                      order,
+                    },
+                  }}
+                  className="flex justify-center gap-1"
+                >
+                  {column.label}
+                  {params.order === "asc" &&
+                    column.value === params.orderBy && (
+                      <IoCaretUpCircleOutline className="text-xl" />
+                    )}
+                  {params.order === "desc" &&
+                    column.value === params.orderBy && (
+                      <IoCaretDownCircleOutline className="text-xl" />
+                    )}
+                </NextLink>
+              </TableHead>
+            ))}
           </TableRow>
         </TableHeader>
         <TableBody>

@@ -2,11 +2,11 @@
 
 import {
   Select,
-  SelectGroup,
-  SelectValue,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Status } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -14,7 +14,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 const IssueStatusFilter = () => {
   const searchParams = useSearchParams();
   const selectedStatus = Object.values(Status).includes(
-    searchParams.get("status") as Status // no tyoe casting
+    searchParams.get("status") as Status // no type casting
   )
     ? searchParams.get("status")
     : "All";
@@ -28,14 +28,24 @@ const IssueStatusFilter = () => {
     { label: "In Progress", value: "IN_PROGRESS" },
     { label: "Closed", value: "CLOSE" },
   ];
+
+  const handleChange = (status: string) => {
+    const params = new URLSearchParams();
+
+    if (status) params.append("status", status);
+
+    if (searchParams.get("orderBy"))
+      params.append("orderBy", searchParams.get("orderBy")!);
+
+    if (searchParams.get("order"))
+      params.append("order", searchParams.get("order")!);
+
+    const query = params.size ? "?" + params.toString() : "";
+    router.push(`/issues/${query}`);
+  };
+
   return (
-    <Select
-      defaultValue={selectedStatus!}
-      onValueChange={(status) => {
-        const query = status && status !== "All" ? `?status=${status}` : "";
-        router.push(`/issues/${query}`);
-      }}
-    >
+    <Select defaultValue={selectedStatus!} onValueChange={handleChange}>
       <SelectTrigger>
         <SelectValue placeholder="Filter: by status" />
       </SelectTrigger>
