@@ -26,7 +26,7 @@ const IssueStatusFilter = () => {
     },
     { label: "Open", value: "OPEN" },
     { label: "In Progress", value: "IN_PROGRESS" },
-    { label: "Closed", value: "CLOSE" },
+    { label: "Closed", value: "CLOSED" },
   ];
 
   const handleChange = (status: string) => {

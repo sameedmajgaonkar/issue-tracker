@@ -11,7 +11,7 @@ const statusMap: Record<Status, { label: string; className: string }> = {
     label: "In Progress",
     className: "bg-violet-300 text-violet-800",
   },
-  CLOSE: { label: "Closed", className: "bg-green-300 text-green-800" },
+  CLOSED: { label: "Closed", className: "bg-green-300 text-green-800" },
 };
 
 const IssueStatusBadge = ({ status }: Props) => {
