@@ -8,7 +8,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, XAxis } from "recharts";
 
 interface Props {
   open: number;
@@ -43,13 +43,7 @@ const IssueChart = ({ open, inProgress, closed }: Props) => {
         />
         <ChartTooltip content={<ChartTooltipContent />} />
         <ChartLegend content={<ChartLegendContent />} />
-        <Bar
-          dataKey="value"
-          fill="var(--primary)"
-          radius={5}
-          barSize={50}
-          maxBarSize={50}
-        />
+        <Bar dataKey="value" fill="var(--primary)" radius={5} barSize={50} />
       </BarChart>
     </ChartContainer>
   );
