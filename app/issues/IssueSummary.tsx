@@ -54,7 +54,7 @@ const IssueSummary = ({ open, inProgress, closed }: Props) => {
               {container.icon}
             </CardTitle>
             <CardDescription className="text-md md:text-xl mt-3">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+              <h3 className="scroll-m-20 font-semibold tracking-tight">
                 {container.value}
               </h3>
             </CardDescription>

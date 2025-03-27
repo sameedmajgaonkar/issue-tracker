@@ -21,9 +21,11 @@ export default async function Home() {
   });
   return (
     <div className="space-y-5">
-      <LatestIssues />
       <IssueSummary open={open} inProgress={inPorgress} closed={closed} />
-      <IssueChart open={open} inProgress={inPorgress} closed={closed} />
+      <div className="grid sm:grid-cols-2">
+        <IssueChart open={open} inProgress={inPorgress} closed={closed} />
+        <LatestIssues />
+      </div>
     </div>
   );
 }

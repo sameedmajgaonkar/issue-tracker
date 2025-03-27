@@ -30,8 +30,11 @@ const IssueChart = ({ open, inProgress, closed }: Props) => {
   ];
 
   return (
-    <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-      <BarChart accessibilityLayer data={data} barGap={1} barCategoryGap={2}>
+    <ChartContainer
+      config={chartConfig}
+      className="min-h-full overflow-hidden w-full "
+    >
+      <BarChart accessibilityLayer data={data}>
         <XAxis
           dataKey="label"
           tickLine={false}
@@ -40,7 +43,13 @@ const IssueChart = ({ open, inProgress, closed }: Props) => {
         />
         <ChartTooltip content={<ChartTooltipContent />} />
         <ChartLegend content={<ChartLegendContent />} />
-        <Bar dataKey="value" fill="var(--primary)" radius={10} barSize={100} />
+        <Bar
+          dataKey="value"
+          fill="var(--primary)"
+          radius={5}
+          barSize={50}
+          maxBarSize={50}
+        />
       </BarChart>
     </ChartContainer>
   );
