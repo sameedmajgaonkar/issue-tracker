@@ -20,7 +20,7 @@ const IssueStatusFilter = () => {
     : "All";
 
   const router = useRouter();
-  const statuses: { label: String; value?: Status }[] = [
+  const statuses: { label: string; value?: Status }[] = [
     {
       label: "All",
     },
