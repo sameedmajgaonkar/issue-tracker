@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
@@ -48,6 +49,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.16",
+    "@types/ms": "^2.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -58,6 +60,6 @@
     "typescript": "^5"
   },
   "overrides": {
-  "react-is": "^19.0.0-rc-69d4b800-20241021"
-}
+    "react-is": "^19.0.0-rc-69d4b800-20241021"
+  }
 }
